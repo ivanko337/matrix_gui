@@ -4,16 +4,32 @@
 import sys
 from enterMatrix_UI import Ui_MainWindow
 from PyQt5 import QtWidgets, QtCore
+from MyMatrix import Matrix
 
 class EnterMatrix(QtWidgets.QMainWindow, Ui_MainWindow):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
 		self.pushButton.clicked.connect(self.p)
-		self.data = []
+		self.data = Matrix()
 
 	def p(self):
-		help(self.horizontalLayout)
+		self.data = Matrix()
+		count = self.verticalLayout.count()
+		for i in range(count):
+			if isinstance(self.verticalLayout.itemAt(i), QtWidgets.QWidgetItem):
+				continue
+			temp = self.verticalLayout.itemAt(i).count()
+			temp_res = []
+			for j in range(temp):
+				if type(self.verticalLayout.itemAt(i).itemAt(j).widget()) == QtWidgets.QLabel:
+					continue
+				value = self.verticalLayout.itemAt(i).itemAt(j).widget().text()
+				if value == '':
+					temp_res.append(0.)
+				else:
+					temp_res.append(float(value))
+			self.data.append(temp_res)
 
 def __main__():
 	app = QtWidgets.QApplication(sys.argv)
